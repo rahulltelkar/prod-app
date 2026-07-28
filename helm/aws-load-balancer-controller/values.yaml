@@ -1,0 +1,9 @@
+clusterName: platform-demo-eks
+
+replicaCount: 1
+
+serviceAccount:
+  create: true
+  name: aws-load-balancer-controller
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::003107248036:role/AmazonEKSLoadBalancerControllerRole
