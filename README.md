@@ -36,7 +36,7 @@ The AWS infrastructure required to host this application—including the VPC, Am
 
 The infrastructure required to deploy this application is maintained separately.
 
-**Infrastructure Repository**
+**Infrastructure Repository** https://github.com/rahulltelkar/prod-infra/tree/main
 
 👉 **aws-eks-terraform-infra**
 
