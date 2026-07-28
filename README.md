@@ -75,3 +75,162 @@ The application follows a cloud-native two-tier architecture deployed on Amazon 
                            ☸️ Amazon EKS Cluster
 
 ---
+
+### Architecture Workflow
+
+1. Users access the application through the AWS Application Load Balancer (ALB).
+2. The AWS Load Balancer Controller automatically provisions and manages the ALB based on the Kubernetes Ingress resource.
+3. Incoming requests are routed to the Frontend Kubernetes Service.
+4. The Frontend application communicates with the Backend API through the Backend Kubernetes Service.
+5. Both application components run as independent Kubernetes Deployments managed by Helm charts.
+6. The application is deployed to Amazon EKS using a Jenkins CI/CD pipeline.
+7. Kubernetes Metrics Server provides resource metrics for the cluster.
+8. k6 scripts can be used to perform basic load testing on the deployed application.
+
+---
+
+### Architecture Components
+
+| Component | Purpose |
+|-----------|---------|
+| Frontend | Serves the web user interface using Nginx |
+| Backend API | Processes application requests and business logic |
+| Docker | Containerizes both application components |
+| Helm | Packages and deploys Kubernetes resources |
+| Amazon EKS | Hosts the Kubernetes workloads |
+| Kubernetes Services | Enable communication between application components |
+| Kubernetes Ingress | Exposes the application externally |
+| AWS Load Balancer Controller | Automatically provisions and manages the Application Load Balancer |
+| Jenkins | Automates build and deployment of the application |
+| Metrics Server | Provides Kubernetes resource metrics |
+| k6 | Performs load testing to validate application performance |
+
+## Application Overview
+
+This project demonstrates a cloud-native two-tier web application consisting of a static frontend and a Python-based backend API.
+
+The backend exposes REST APIs that provide application and runtime information, including:
+
+- Application health status
+- Application metadata (name, version, and environment)
+- Runtime system information such as hostname, operating system, and Python version
+
+The frontend provides a simple web interface that consumes these APIs and displays the information to the user.
+
+The frontend and backend are deployed as independent Kubernetes workloads and communicate internally through Kubernetes Services.
+
+The application is containerized using Docker, deployed to Amazon EKS using Helm charts, and exposed externally through an AWS Application Load Balancer (ALB). A Jenkins CI/CD pipeline automates the build and deployment process, and k6 scripts are included for basic load testing.
+
+Although the application functionality is intentionally simple, its primary purpose is to demonstrate modern cloud-native application deployment practices, including containerization, Kubernetes orchestration, Helm-based deployments, CI/CD automation, and application validation on Amazon EKS.
+
+### Available API Endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| `/api/health` | Returns the application health status. |
+| `/api/info` | Returns application metadata including name, version, and environment. |
+| `/api/system` | Returns runtime information such as hostname, operating system, and Python version. |
+
+## Technology Stack
+
+| Technology | Purpose |
+|------------|---------|
+| Python (FastAPI) | Backend REST API development |
+| HTML, CSS, JavaScript | Frontend user interface |
+| Docker | Containerization of frontend and backend applications |
+| Kubernetes | Container orchestration and application deployment |
+| Helm | Kubernetes package management and application deployment |
+| Amazon EKS | Managed Kubernetes service |
+| Jenkins | CI/CD pipeline automation |
+| AWS Load Balancer Controller | Automatic provisioning of AWS Application Load Balancers |
+| NGINX | Serves the static frontend application |
+| Metrics Server | Kubernetes resource metrics collection |
+| k6 | Load and performance testing |
+
+---
+
+### Why These Technologies?
+
+#### Python (FastAPI)
+
+FastAPI is used to build a lightweight and high-performance REST API that exposes application health, metadata, and runtime system information.
+
+#### Docker
+
+Docker packages the frontend and backend into portable container images, ensuring consistent deployments across different environments.
+
+#### Kubernetes
+
+Kubernetes orchestrates application deployment, scaling, networking, and lifecycle management of containerized workloads.
+
+#### Helm
+
+Helm simplifies Kubernetes deployments by packaging related Kubernetes resources into reusable and version-controlled charts.
+
+#### Amazon EKS
+
+Amazon Elastic Kubernetes Service (EKS) provides a managed Kubernetes control plane, reducing operational overhead while offering a production-ready Kubernetes environment.
+
+#### Jenkins
+
+Jenkins automates the application build and deployment workflow, enabling consistent and repeatable CI/CD processes.
+
+#### AWS Load Balancer Controller
+
+The AWS Load Balancer Controller automatically provisions and manages an Application Load Balancer (ALB) based on Kubernetes Ingress resources, providing external access to the application.
+
+#### Metrics Server
+
+Metrics Server collects CPU and memory usage metrics from Kubernetes nodes and pods, enabling resource monitoring.
+
+#### k6
+
+k6 is used to perform load testing and validate the application's behavior under concurrent user traffic.
+
+## Repository Structure
+
+```text
+.
+├── backend/                  # FastAPI backend application
+├── frontend/                 # Static frontend application
+├── helm/                     # Helm charts for Kubernetes deployment
+│   ├── aws-load-balancer-controller/
+│   ├── metrics-server/
+│   ├── platform-api/
+│   ├── platform-frontend/
+│   └── platform-ingress/
+├── k6/                       # Load testing scripts
+├── Jenkinsfile               # CI/CD pipeline definition
+└── README.md
+```
+
+---
+
+### Directory Overview
+
+| Directory/File | Description |
+|---------------|-------------|
+| `backend/` | Contains the FastAPI backend application and its Dockerfile. |
+| `frontend/` | Contains the static web application (HTML, CSS, JavaScript) and NGINX configuration. |
+| `helm/` | Contains Helm charts used to deploy the application and supporting Kubernetes components. |
+| `platform-api/` | Helm chart for deploying the backend API. |
+| `platform-frontend/` | Helm chart for deploying the frontend application. |
+| `platform-ingress/` | Helm chart that exposes the application using Kubernetes Ingress. |
+| `aws-load-balancer-controller/` | Helm values used to deploy the AWS Load Balancer Controller. |
+| `metrics-server/` | Helm values used to deploy Kubernetes Metrics Server. |
+| `k6/` | Load testing scripts used to validate application performance. |
+| `Jenkinsfile` | Defines the CI/CD pipeline for building and deploying the application. |
+
+---
+
+### Repository Organization
+
+The repository is organized by responsibility to improve readability and maintainability.
+
+- **Application Source** – Frontend and backend application code.
+- **Containerization** – Dockerfiles for packaging the applications.
+- **Deployment** – Helm charts for Kubernetes deployment.
+- **CI/CD** – Jenkins pipeline for automated build and deployment.
+- **Performance Testing** – k6 scripts for validating application performance.
+
+This structure separates development, deployment, automation, and testing concerns, making the project easier to maintain and extend.
