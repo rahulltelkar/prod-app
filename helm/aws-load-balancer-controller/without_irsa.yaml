@@ -1,0 +1,7 @@
+# no annotation since here we are using eks-pod-dentity
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: aws-load-balancer-controller
+  namespace: kube-system
