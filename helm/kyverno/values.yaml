@@ -1,0 +1,29 @@
+validationFailureAction: Enforce
+
+environment: production
+
+prometheus:
+
+  scrape: "true"
+
+  port: "8080"
+
+imagePullSecret:
+
+  name: company-registry-secret
+
+securityContext:
+
+  runAsNonRoot: true
+
+  seccompProfile: RuntimeDefault
+
+toleration:
+
+  key: node-role
+
+  operator: Equal
+
+  value: database
+
+  effect: NoSchedule

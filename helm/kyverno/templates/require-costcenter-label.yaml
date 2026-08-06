@@ -1,0 +1,31 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+
+metadata:
+  name: require-costcenter-label
+
+spec:
+
+  validationFailureAction: {{ .Values.validationFailureAction }}
+
+  rules:
+
+  - name: validate-cost-center
+
+    match:
+      any:
+      - resources:
+          kinds:
+          - Deployment
+
+    validate:
+
+      message: "Cost Center label is mandatory."
+
+      pattern:
+
+        metadata:
+
+          labels:
+
+            cost-center: "?*"

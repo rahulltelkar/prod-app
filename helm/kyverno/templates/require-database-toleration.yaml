@@ -1,0 +1,38 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+
+metadata:
+  name: require-database-toleration
+
+spec:
+
+  validationFailureAction: {{ .Values.validationFailureAction }}
+
+  rules:
+
+  - name: validate-db-toleration
+
+    match:
+      any:
+      - resources:
+          kinds:
+          - Deployment
+
+    validate:
+
+      message: "Database workloads must define the required toleration."
+
+      pattern:
+
+        spec:
+
+          template:
+
+            spec:
+
+              tolerations:
+
+              - key: "{{ .Values.toleration.key }}"
+                operator: "{{ .Values.toleration.operator }}"
+                value: "{{ .Values.toleration.value }}"
+                effect: "{{ .Values.toleration.effect }}"
