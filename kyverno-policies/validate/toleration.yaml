@@ -1,0 +1,29 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-database-toleration
+
+spec:
+  validationFailureAction: Enforce
+
+  rules:
+    - name: validate-database-toleration
+
+      match:
+        any:
+          - resources:
+              kinds:
+                - Deployment
+
+      validate:
+        message: "Deployment must define the required toleration for database nodes."
+
+        pattern:
+          spec:
+            template:
+              spec:
+                tolerations:
+                  - key: "node-role"
+                    operator: "Equal"
+                    value: "database"
+                    effect: "NoSchedule"
