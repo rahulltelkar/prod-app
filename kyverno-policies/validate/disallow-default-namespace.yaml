@@ -1,0 +1,32 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-default-namespace
+
+spec:
+
+  validationFailureAction: Enforce
+
+  rules:
+
+  - name: no-default-ns
+
+    match:
+      any:
+      - resources:
+          kinds:
+          - Deployment
+
+    validate:
+
+      message: "Deployment in default namespace is prohibited."
+
+      deny:
+
+        conditions:
+
+        - key: "{{request.object.metadata.namespace}}"
+
+          operator: Equals
+
+          value: default
